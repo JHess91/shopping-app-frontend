@@ -1,22 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
+import { ProductCard } from '../components/ProductCard'
 
 const Home = () => {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:4040/')
-    .then(response => response.json())
-    .then(data => setProducts(data))
-    .catch(err => console.error(err))
+    fetch(process.env.REACT_APP_API_ENDPOINT)
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error(err))
   }, [])
 
-  const allProducts = products.map(products => <li>{products.name}</li>)
+  const allProducts = products.map((product, index) => {
+   return <ProductCard key={product._id} product={product} index={index} />
+   
+  })
 
-  return(
-    <>
-    <h1>Home component</h1>
-    {allProducts}
-    </>
+  return (
+    <div className="container">
+      <h1>Home component</h1>
+      <div className="products">{allProducts} </div>
+    </div>
   )
 }
 
